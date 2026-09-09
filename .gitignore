@@ -3,6 +3,7 @@ node_modules/
 
 # Build plan - local reference only, not for repo
 church-attendance-build-plan (1).md
+IMPLEMENTATION_PLAN.md
 
 # Stitch design mockups - local reference only
 stitch_church_attendance_system/

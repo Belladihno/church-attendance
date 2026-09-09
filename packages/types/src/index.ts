@@ -26,6 +26,13 @@ export enum FollowUpStatus {
   CLOSED = 'CLOSED',
 }
 
+export enum FirstTimerFollowUpStatus {
+  PENDING = 'PENDING',
+  CONTACTED = 'CONTACTED',
+  CONVERTED = 'CONVERTED',
+  CLOSED = 'CLOSED',
+}
+
 export enum UserRole {
   ADMIN = 'ADMIN',
   STAFF = 'STAFF',
