@@ -3,6 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { User } from './users/entities/user.entity';
+import { Member } from './members/entities/member.entity';
+import { Attendance } from './attendance/entities/attendance.entity';
+import { FirstTimer } from './first-timers/entities/first-timer.entity';
+import { FollowUp } from './follow-ups/entities/follow-up.entity';
 
 @Module({
   imports: [
@@ -25,9 +30,7 @@ import { AppService } from './app.service';
           ssl: isNeon ? { rejectUnauthorized: false } : false, // Neon requires SSL; local pgAdmin does not
           synchronize: false,
           migrations: ['dist/migrations/*.js'],
-          // Entities added in Step 4 — keep empty to allow Step 3 build without DB
-          entities: [],
-          autoLoadEntities: true,
+          entities: [User, Member, Attendance, FirstTimer, FollowUp],
         };
       },
       inject: [ConfigService],

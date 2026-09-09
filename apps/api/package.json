@@ -19,11 +19,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:generate": "typeorm migration:generate -d src/data-source.ts src/migrations/Init",
-    "migration:run": "typeorm migration:run -d src/data-source.ts",
-    "migration:revert": "typeorm migration:revert -d src/data-source.ts"
+    "migration:generate": "pnpm build && typeorm migration:generate -d dist/data-source.js",
+    "migration:run": "pnpm build && typeorm migration:run -d dist/data-source.js",
+    "migration:revert": "pnpm build && typeorm migration:revert -d dist/data-source.js"
   },
   "dependencies": {
+    "@church/types": "workspace:*",
     "@nestjs/common": "^12.0.1",
     "@nestjs/config": "^12.0.0",
     "@nestjs/core": "^12.0.1",

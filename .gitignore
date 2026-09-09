@@ -10,3 +10,9 @@ stitch_church_attendance_system/
 
 # IDE - VSCode
 .vscode/
+
+# Build outputs
+dist/
+packages/*/dist/
+*.tsbuildinfo
+apps/api/dist/
