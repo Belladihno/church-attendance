@@ -1,0 +1,67 @@
+@import "tailwindcss";
+@import "@fontsource/dm-sans/400.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/600.css";
+@import "@fontsource/dm-sans/700.css";
+
+@theme {
+  /* Brand */
+  --color-brand-purple: #2D1B8B;
+  --color-brand-red: #CC0000;
+  --color-brand-green: #1A7A1A;
+
+  /* Backgrounds */
+  --color-bg-base: #F4F6FB;
+  --color-bg-sidebar: #1E1360;
+  --color-bg-sidebar-active: #2D1B8B;
+  --color-bg-card: #FFFFFF;
+
+  /* Text */
+  --color-text-primary: #0F0A2E;
+  --color-text-secondary: #5A5480;
+  --color-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --color-border: #DDE1F0;
+  --color-border-focus: #2D1B8B;
+
+  /* Status */
+  --color-present: #1A7A1A;
+  --color-present-bg: #EBF5EB;
+  --color-absent: #CC0000;
+  --color-absent-bg: #FDEAEA;
+  --color-excused: #5A5480;
+  --color-excused-bg: #EEECF7;
+  --color-pending: #B45309;
+  --color-pending-bg: #FEF3C7;
+  --color-contacted: #0369A1;
+  --color-contacted-bg: #E0F2FE;
+
+  /* Typography */
+  --font-sans: "DM Sans", system-ui, sans-serif;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+
+  /* Shadow */
+  --shadow-card: 0 1px 3px rgba(15, 10, 46, 0.08);
+  --shadow-modal: 0 8px 32px rgba(15, 10, 46, 0.18);
+}
+
+* {
+  font-variant-ligatures: common-ligatures;
+}
+
+html {
+  font-family: var(--font-sans);
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
