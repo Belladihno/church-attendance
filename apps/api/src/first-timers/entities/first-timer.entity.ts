@@ -6,11 +6,14 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  Unique,
+  VersionColumn,
 } from 'typeorm';
 import { Gender, ServiceType, FirstTimerFollowUpStatus } from '@church/types';
 import { Member } from '../../members/entities/member.entity';
 
 @Entity('first_timers')
+@Unique('UQ_first_timers_phone_date', ['phone', 'dateAttended'])
 export class FirstTimer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -65,4 +68,7 @@ export class FirstTimer {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
+
+  @VersionColumn()
+  version: number;
 }
