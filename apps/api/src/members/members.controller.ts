@@ -14,11 +14,15 @@ import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { MemberFilterDto } from './dto/member-filter.dto';
 import { Roles } from '../common/decorators/roles.decorator';
-import { UserRole } from '@church/types';
+import { UserRole, ServiceType } from '@church/types';
+import { AttendanceService } from '../attendance/attendance.service';
 
 @Controller('members')
 export class MembersController {
-  constructor(private membersService: MembersService) {}
+  constructor(
+    private membersService: MembersService,
+    private attendanceService: AttendanceService,
+  ) {}
 
   @Post()
   @Roles(UserRole.ADMIN)
@@ -32,8 +36,13 @@ export class MembersController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.membersService.findOne(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    const member = await this.membersService.findOne(id);
+    const [rate, history] = await Promise.all([
+      this.attendanceService.getAttendanceRate(id, ServiceType.SUNDAY_SERVICE),
+      this.attendanceService.getMemberHistory(id),
+    ]);
+    return { ...member, attendance: { rate: Math.round(rate * 10) / 10, history: history.slice(0, 12) } };
   }
 
   @Patch(':id')

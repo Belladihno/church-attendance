@@ -21,19 +21,25 @@ async function seed() {
   await ds.initialize();
   const repo = ds.getRepository(User);
 
-  const email = process.env.SEED_ADMIN_EMAIL || 'admin@gracechapel.org';
-  const password = process.env.SEED_ADMIN_PASSWORD || 'Admin123!';
-  const existing = await repo.findOne({ where: { email } });
-  if (existing) {
-    console.log(`Admin already exists: ${email}`);
-    await ds.destroy();
-    return;
-  }
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@gracechapel.org';
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'Admin123!';
+  const staffEmail = process.env.SEED_STAFF_EMAIL || 'staff@gracechapel.org';
+  const staffPassword = process.env.SEED_STAFF_PASSWORD || 'Staff123!';
 
-  const hash = await bcrypt.hash(password, 10);
-  const user = repo.create({ email, passwordHash: hash, role: UserRole.ADMIN });
-  await repo.save(user);
-  console.log(`Seeded admin: ${email} / ${password}`);
+  for (const [email, password, role] of [
+    [adminEmail, adminPassword, UserRole.ADMIN] as const,
+    [staffEmail, staffPassword, UserRole.STAFF] as const,
+  ]) {
+    const existing = await repo.findOne({ where: { email } });
+    if (existing) {
+      console.log(`User already exists: ${email} (${role})`);
+      continue;
+    }
+    const hash = await bcrypt.hash(password, 10);
+    const user = repo.create({ email, passwordHash: hash, role });
+    await repo.save(user);
+    console.log(`Seeded ${role}: ${email} / ${password}`);
+  }
   await ds.destroy();
 }
 
