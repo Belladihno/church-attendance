@@ -21,7 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "pnpm build && typeorm migration:generate -d dist/data-source.js",
     "migration:run": "pnpm build && typeorm migration:run -d dist/data-source.js",
-    "migration:revert": "pnpm build && typeorm migration:revert -d dist/data-source.js"
+    "migration:revert": "pnpm build && typeorm migration:revert -d dist/data-source.js",
+    "seed": "ts-node -P tsconfig.typeorm.json src/seed.ts"
   },
   "dependencies": {
     "@church/types": "workspace:*",
