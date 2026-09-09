@@ -1,9 +1,13 @@
-import { PageHeader, EmptyState } from '../components/ui/PageHeader';
+import { useParams } from 'react-router-dom';
+import { PageHeader } from '../components/ui/PageHeader';
+import { AttendancePage } from './AttendancePage';
+
 export function MonthlyAttendancePage() {
+  const { year, month } = useParams();
   return (
     <div>
-      <PageHeader title="Monthly attendance" />
-      <EmptyState message="Monthly grid — Step 14.6" />
+      <PageHeader title={`Attendance ${month}/${year}`} />
+      <AttendancePage />
     </div>
   );
 }

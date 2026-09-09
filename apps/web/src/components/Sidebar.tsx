@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LayoutDashboard, Users, ClipboardCheck, UserPlus, HeartHandshake, BarChart3, LogOut } from 'lucide-react';
+import redeemLogo from '@/assets/redeem-logo.png';
 
 const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -21,7 +22,7 @@ export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose:
     >
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-purple font-bold">R</div>
+          <img src={redeemLogo} alt="RCCG Logo" className="w-10 h-10 rounded-full object-contain bg-white p-1" />
           <div>
             <div className="text-sm font-semibold">RCCG Grace Chapel</div>
             <div className="text-xs opacity-70">Area</div>
