@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MembersModule } from './members/members.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { FollowUpsModule } from './follow-ups/follow-ups.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -46,6 +47,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     AuthModule,
     MembersModule,
     AttendanceModule,
+    FollowUpsModule,
   ],
   controllers: [AppController],
   providers: [
