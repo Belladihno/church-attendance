@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  VersionColumn,
 } from 'typeorm';
 import { Gender, MemberStatus } from '@church/types';
 
@@ -18,7 +19,7 @@ export class Member {
   @Column({ type: 'varchar', name: 'last_name' })
   lastName: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   phone: string;
 
   @Column({ type: 'enum', enum: Gender })
@@ -50,4 +51,7 @@ export class Member {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
+
+  @VersionColumn()
+  version: number;
 }

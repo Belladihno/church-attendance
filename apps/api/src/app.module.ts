@@ -11,6 +11,7 @@ import { FirstTimer } from './first-timers/entities/first-timer.entity';
 import { FollowUp } from './follow-ups/entities/follow-up.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { MembersModule } from './members/members.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -42,6 +43,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     }),
     UsersModule,
     AuthModule,
+    MembersModule,
   ],
   controllers: [AppController],
   providers: [
