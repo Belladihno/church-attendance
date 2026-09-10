@@ -17,7 +17,7 @@ export function DashboardPage() {
 
   const firstName = user?.email?.split('@')[0]?.split('.')[0]
     ? user.email.split('@')[0].split('.')[0].charAt(0).toUpperCase() + user.email.split('@')[0].split('.')[0].slice(1)
-    : 'Adaeze';
+    : 'Bellanzo';
   const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
 
   return (

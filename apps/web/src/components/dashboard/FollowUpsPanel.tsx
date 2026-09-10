@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import type { DashboardOverview } from '../../api/dashboard';
+import { Avatar } from '../ui/Avatar';
 
 export function FollowUpsPanel({ data, followUps }: { data: DashboardOverview; followUps?: any[] }) {
   const overdue = data.followUpRequired.twoWeeks + data.followUpRequired.threeOrMore;
@@ -21,12 +22,13 @@ export function FollowUpsPanel({ data, followUps }: { data: DashboardOverview; f
         ) : (
           followUps.slice(0, 4).map((m: any) => (
             <div key={m.id} className="p-3 rounded-lg bg-[#F6F1FF] flex flex-col gap-2">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="text-sm font-semibold text-text-primary">{m.firstName} {m.lastName}</div>
-                  <div className="text-xs text-text-secondary">{m.department || 'Member'} • {m.churchRole || 'Member'}</div>
+              <div className="flex items-center gap-3">
+                <Avatar firstName={m.firstName} lastName={m.lastName} size={32} />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold text-text-primary truncate">{m.firstName} {m.lastName}</div>
+                  <div className="text-xs text-text-secondary truncate">{m.department || 'Member'} • {m.churchRole || 'Member'}</div>
                 </div>
-                <span className="px-2 py-0.5 rounded-md bg-absent-bg text-absent text-[11px]">Absent 2+ Sundays</span>
+                <span className="px-2 py-0.5 rounded-md bg-absent-bg text-absent text-[11px] shrink-0">Absent 2+ Sundays</span>
               </div>
               <div className="flex items-center justify-between pt-1">
                 <span className="text-xs text-text-secondary/60">Last attended: {m.dateJoined ? new Date(m.dateJoined).toLocaleDateString() : '-'}</span>

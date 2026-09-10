@@ -9,6 +9,7 @@ import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { Avatar } from '../components/ui/Avatar';
 
 export function MembersListPage() {
   const [page, setPage] = useState(1);
@@ -68,8 +69,13 @@ export function MembersListPage() {
               {data.data.map((m, idx) => (
                 <TableRow key={m.id} alt={idx % 2 === 1}>
                   <TableCell>
-                    <div className="font-medium text-text-primary">{m.firstName} {m.lastName}</div>
-                    <div className="text-xs text-text-secondary">{m.gender}</div>
+                    <div className="flex items-center gap-3">
+                      <Avatar firstName={m.firstName} lastName={m.lastName} size={36} />
+                      <div>
+                        <div className="font-medium text-text-primary">{m.firstName} {m.lastName}</div>
+                        <div className="text-xs text-text-secondary">{m.gender}</div>
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell>{m.phone}</TableCell>
                   <TableCell>{m.department}</TableCell>

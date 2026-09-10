@@ -4,6 +4,7 @@ import { getMember } from '../api/members';
 import { PageHeader } from '../components/ui/PageHeader';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { Avatar } from '../components/ui/Avatar';
 
 export function MemberDetailPage() {
   const { id } = useParams();
@@ -20,6 +21,13 @@ export function MemberDetailPage() {
         actions={<Link to={`/members/${id}/edit`}><Button variant="secondary">Edit member</Button></Link>}
       />
       <div className="bg-bg-card border border-border rounded-xl p-6 shadow-card mb-6">
+        <div className="flex items-center gap-4 mb-4">
+          <Avatar firstName={data.firstName} lastName={data.lastName} size={64} />
+          <div>
+            <div className="font-semibold text-text-primary">{data.firstName} {data.lastName}</div>
+            <div className="text-sm text-text-secondary">{data.churchRole} • {data.department}</div>
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div><span className="text-text-secondary">Phone:</span> {data.phone}</div>
           <div><span className="text-text-secondary">Gender:</span> {data.gender}</div>
