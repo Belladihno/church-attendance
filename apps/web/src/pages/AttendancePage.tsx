@@ -6,6 +6,13 @@ import { SubHeader } from '../components/attendance/SubHeader';
 import { SummaryStrip } from '../components/attendance/SummaryStrip';
 import { GridControls } from '../components/attendance/GridControls';
 import { AttendanceMatrix } from '../components/attendance/AttendanceMatrix';
+import { MobileSessionCard } from '../components/attendance/MobileSessionCard';
+import { MobileMetricStrip } from '../components/attendance/MobileMetricStrip';
+import { MobileSearchChips } from '../components/attendance/MobileSearchChips';
+import { MobileRoster, type RosterMember } from '../components/attendance/MobileRoster';
+import { MobileNoteSheet } from '../components/attendance/MobileNoteSheet';
+import { MobileSyncBar } from '../components/attendance/MobileSyncBar';
+import { departmentLabel, churchRoleLabel } from '../components/members/labels';
 
 const SYSTEM_START = { year: 2026, month: 9 };
 
@@ -18,6 +25,8 @@ export function AttendancePage() {
   const [selectedSunday, setSelectedSunday] = useState<string | null>(null);
   const [department, setDepartment] = useState('');
   const [edits, setEdits] = useState<Record<string, string>>({});
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [noteMember, setNoteMember] = useState<RosterMember | null>(null);
   const qc = useQueryClient();
 
   const isBeforeStart = year < SYSTEM_START.year || (year === SYSTEM_START.year && month < SYSTEM_START.month);
@@ -133,8 +142,92 @@ export function AttendancePage() {
 
   const monthLabel = new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
+  // ---- Mobile fast-marking helpers (roster targets selectedSunday only) ----
+  const dToday = new Date();
+  const mobileTodayStr = `${dToday.getFullYear()}-${String(dToday.getMonth() + 1).padStart(2, '0')}-${String(dToday.getDate()).padStart(2, '0')}`;
+  const sundayIndex = grid && selectedSunday ? grid.sundays.indexOf(selectedSunday) : -1;
+
+  const memberMeta = useMemo(() => {
+    const map = new Map<string, { department?: string | null; churchRole?: string; notes?: string | null }>();
+    for (const m of membersData?.data ?? []) {
+      map.set(m.id, { department: m.department, churchRole: m.churchRole, notes: m.notes });
+    }
+    return map;
+  }, [membersData]);
+
+  const deptCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const m of membersData?.data ?? []) {
+      if (m.department && m.department !== 'NONE') counts[m.department] = (counts[m.department] ?? 0) + 1;
+    }
+    return counts;
+  }, [membersData]);
+
+  const onMark = (memberId: string, status: string) => {
+    if (!selectedSunday) return;
+    setEdits((prev) => ({ ...prev, [`${memberId}|${selectedSunday}`]: status }));
+  };
+
+  const onMarkRest = () => {
+    if (!grid || !selectedSunday || sundayIndex < 0 || selectedSunday > mobileTodayStr) return;
+    const next: Record<string, string> = { ...edits };
+    for (const m of filteredMembers) {
+      const key = `${m.id}|${selectedSunday}`;
+      const cur = next[key] ?? m.records[sundayIndex];
+      if (!cur) next[key] = 'PRESENT';
+    }
+    setEdits(next);
+  };
+
+  const noteMeta = noteMember ? memberMeta.get(noteMember.id) : undefined;
+  const noteDeptRole = noteMeta?.department || noteMeta?.churchRole
+    ? `${noteMeta?.department ? departmentLabel(noteMeta.department) : 'Congregation'} · ${noteMeta?.churchRole ? churchRoleLabel(noteMeta.churchRole) : 'Member'}`
+    : undefined;
+
   return (
     <div className="flex flex-col gap-6">
+      {/* Mobile fast-marking layout */}
+      <div className="md:hidden flex flex-col gap-3.5 max-w-lg mx-auto w-full">
+        <MobileSessionCard selectedSunday={selectedSunday} serviceType={serviceType} onServiceChange={setServiceType} />
+        <MobileMetricStrip total={total} recorded={summary.recorded} present={summary.present} absent={summary.absent} excused={summary.excused} />
+        <MobileSearchChips
+          search={search}
+          onSearch={setSearch}
+          department={department}
+          onDepartmentChange={setDepartment}
+          counts={deptCounts}
+          total={membersData?.total ?? 0}
+        />
+        {isBeforeStart ? (
+          <div className="bg-white rounded-2xl p-12 text-center shadow-card">
+            <div className="text-text-secondary">No records before September 2026</div>
+            <div className="text-xs text-text-secondary/60 mt-1">Attendance tracking starts from September 2026</div>
+          </div>
+        ) : grid && selectedSunday ? (
+          <MobileRoster
+            sundays={grid.sundays}
+            sundayIndex={sundayIndex}
+            selectedSunday={selectedSunday}
+            members={filteredMembers}
+            edits={edits}
+            meta={memberMeta}
+            todayStr={mobileTodayStr}
+            expandedId={expandedId}
+            onExpand={setExpandedId}
+            onMark={onMark}
+            onNote={setNoteMember}
+          />
+        ) : (
+          <div className="text-center p-8 text-text-secondary">Loading roster...</div>
+        )}
+      </div>
+      {grid && selectedSunday && !isBeforeStart && (
+        <MobileSyncBar pending={Object.keys(edits).length} saving={mut.isPending} onMarkRest={onMarkRest} onSync={() => mut.mutate()} />
+      )}
+      <MobileNoteSheet member={noteMember} meta={noteMeta} deptRole={noteDeptRole} onClose={() => setNoteMember(null)} />
+
+      {/* Desktop monthly grid layout */}
+      <div className="hidden md:flex flex-col gap-6">
       <SubHeader month={month} year={year} serviceType={serviceType} onServiceChange={setServiceType} />
       <SummaryStrip total={total} recorded={summary.recorded} present={summary.present} absent={summary.absent} excused={summary.excused} absentDelta={summary.absentDelta} label={summary.label} />
       <GridControls
@@ -170,6 +263,7 @@ export function AttendancePage() {
       ) : (
         <div className="text-center p-8 text-text-secondary">Loading grid...</div>
       )}
+      </div>
     </div>
   );
 }
