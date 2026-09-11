@@ -39,15 +39,18 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-bg-base">
-      <header className="w-full py-4 px-8 flex items-center justify-between border-b border-border bg-bg-card">
-        <div className="flex items-center gap-3">
-          <img src={redeemLogo} alt="RCCG Logo" className="w-8 h-8 rounded-full object-contain" />
-          <div>
-            <div className="text-xs font-semibold text-text-primary">RCCG Grace Chapel Area</div>
-            <div className="text-[11px] text-text-secondary">Parish Attendance & Pastoral Care Portal</div>
+      <header className="w-full py-3 sm:py-4 px-4 sm:px-8 flex items-center justify-between gap-3 border-b border-border bg-bg-card">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <img src={redeemLogo} alt="RCCG Logo" className="w-8 h-8 rounded-full object-contain shrink-0" />
+          <div className="min-w-0">
+            <div className="text-xs font-semibold text-text-primary truncate">RCCG Grace Chapel Area</div>
+            <div className="text-[11px] text-text-secondary truncate">Parish Attendance & Pastoral Care Portal</div>
           </div>
         </div>
-        <span className="text-xs text-brand-green font-medium">System Operational</span>
+        <span className="text-[11px] sm:text-xs text-brand-green font-medium shrink-0 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-green sm:hidden" />
+          System Operational
+        </span>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-10">
@@ -72,7 +75,7 @@ export function LoginPage() {
         </div>
       </main>
 
-      <footer className="w-full py-4 px-8 border-t border-border text-center text-xs text-text-secondary bg-bg-card/40">
+      <footer className="w-full py-4 px-4 border-t border-border text-center text-xs text-text-secondary bg-bg-card/40">
         © 2026 RCCG Grace Chapel Area
       </footer>
     </div>
