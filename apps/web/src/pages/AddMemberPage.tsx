@@ -15,8 +15,9 @@ const schema = z.object({
   phone: z.string().min(1),
   gender: z.enum(['MALE', 'FEMALE']),
   address: z.string().min(1),
-  churchRole: z.string().min(1),
-  department: z.string().min(1),
+  churchRole: z.enum(['MEMBER','WORKER','MEN_LEADER','WOMEN_LEADER','YOUTH_LEADER','DEACON','DEACONESS','ASSISTANT_PASTOR','PASTOR']),
+  department: z.enum(['NONE','CHOIR','USHERING','CHILDREN_MINISTRY','YOUTH_MINISTRY','PRAYER_TEAM','TECHNICAL','WELFARE','PROTOCOL','WORKERS_IN_TRAINING']).optional(),
+  sundaySchoolClass: z.string().optional(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
   dateJoined: z.string().min(1),
 });
@@ -47,9 +48,31 @@ export function AddMemberPage() {
         </div>
         <Input label="Address" {...register('address')} error={errors.address?.message} />
         <div className="grid grid-cols-2 gap-4">
-          <Input label="Church role" {...register('churchRole')} error={errors.churchRole?.message} />
-          <Input label="Department" {...register('department')} error={errors.department?.message} />
+          <Select label="Church role" {...register('churchRole')} error={errors.churchRole?.message}>
+            <option value="MEMBER">Member</option>
+            <option value="WORKER">Worker</option>
+            <option value="MEN_LEADER">Men Leader</option>
+            <option value="WOMEN_LEADER">Women Leader</option>
+            <option value="YOUTH_LEADER">Youth Leader</option>
+            <option value="DEACON">Deacon</option>
+            <option value="DEACONESS">Deaconess</option>
+            <option value="ASSISTANT_PASTOR">Assistant Pastor</option>
+            <option value="PASTOR">Pastor</option>
+          </Select>
+          <Select label="Department" {...register('department')} error={errors.department?.message}>
+            <option value="">None</option>
+            <option value="CHOIR">Choir</option>
+            <option value="USHERING">Ushering</option>
+            <option value="CHILDREN_MINISTRY">Children Ministry</option>
+            <option value="YOUTH_MINISTRY">Youth Ministry</option>
+            <option value="PRAYER_TEAM">Prayer Team</option>
+            <option value="TECHNICAL">Technical</option>
+            <option value="WELFARE">Welfare</option>
+            <option value="PROTOCOL">Protocol</option>
+            <option value="WORKERS_IN_TRAINING">Workers in Training</option>
+          </Select>
         </div>
+        <Input label="Sunday School class" placeholder="Optional" {...register('sundaySchoolClass')} error={errors.sundaySchoolClass?.message} />
         <Input label="Date joined" type="date" {...register('dateJoined')} error={errors.dateJoined?.message} />
         {mut.isError && <div className="text-sm text-brand-red">{(mut.error as any)?.response?.data?.message || 'Failed'}</div>}
         <Button type="submit" disabled={mut.isPending}>{mut.isPending ? 'Saving...' : 'Save member'}</Button>

@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   VersionColumn,
 } from 'typeorm';
-import { Gender, MemberStatus } from '@church/types';
+import { Gender, MemberStatus, ChurchRole, Department } from '@church/types';
 
 @Entity('members')
 export class Member {
@@ -28,11 +28,11 @@ export class Member {
   @Column({ type: 'text' })
   address: string;
 
-  @Column({ type: 'varchar', name: 'church_role' })
-  churchRole: string;
+  @Column({ type: 'enum', enum: ChurchRole, name: 'church_role' })
+  churchRole: ChurchRole;
 
-  @Column({ type: 'varchar' })
-  department: string;
+  @Column({ type: 'enum', enum: Department, nullable: true })
+  department: Department | null;
 
   @Column({ type: 'varchar', name: 'sunday_school_class', nullable: true })
   sundaySchoolClass: string | null;

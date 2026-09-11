@@ -1,14 +1,14 @@
 import { IsOptional, IsString, IsEnum, IsDateString } from 'class-validator';
-import { MemberStatus } from '@church/types';
+import { MemberStatus, ChurchRole, Department } from '@church/types';
 
 export class ConvertToMemberDto {
   @IsOptional()
-  @IsString()
-  department?: string;
+  @IsEnum(Department)
+  department?: Department;
 
   @IsOptional()
-  @IsString()
-  churchRole?: string;
+  @IsEnum(ChurchRole)
+  churchRole?: ChurchRole;
 
   @IsOptional()
   @IsString()

@@ -1,6 +1,6 @@
-import { IsOptional, IsInt, IsEnum, IsUUID, Min, Max } from 'class-validator';
+import { IsOptional, IsInt, IsEnum, IsUUID, IsString, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ServiceType } from '@church/types';
+import { ServiceType, Department } from '@church/types';
 
 export class AttendanceQueryDto {
   @Type(() => Number)
@@ -20,4 +20,8 @@ export class AttendanceQueryDto {
   @IsOptional()
   @IsUUID()
   memberId?: string;
+
+  @IsOptional()
+  @IsEnum(Department)
+  department?: Department;
 }

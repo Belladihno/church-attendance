@@ -1,7 +1,7 @@
 import { apiClient } from './client';
 
-export const getGrid = (params: { month: number; year: number; serviceType: string }) =>
-  apiClient.get<{ sundays: string[]; members: { id: string; name: string; records: (string | null)[] }[] }>('/attendance/grid', { params }).then((r) => r.data);
+export const getGrid = (params: { month: number; year: number; serviceType: string; department?: string }) =>
+  apiClient.get<{ sundays: string[]; members: { id: string; name: string; dateJoined: string; records: (string | null)[] }[] }>('/attendance/grid', { params }).then((r) => r.data);
 
 export const bulkMark = (data: { date: string; serviceType: string; records: { memberId: string; status: string }[] }) =>
   apiClient.post('/attendance/bulk', data).then((r) => r.data);

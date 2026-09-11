@@ -45,9 +45,16 @@ export function MembersListPage() {
         </Select>
         <Select value={department} onChange={(e) => setDepartment(e.target.value)}>
           <option value="">All departments</option>
-          <option value="Ushering Unit">Ushering</option>
-          <option value="Choir Ministry">Choir</option>
-          <option value="Media & Technical">Media</option>
+          <option value="NONE">None</option>
+          <option value="CHOIR">Choir</option>
+          <option value="USHERING">Ushering</option>
+          <option value="CHILDREN_MINISTRY">Children Ministry</option>
+          <option value="YOUTH_MINISTRY">Youth Ministry</option>
+          <option value="PRAYER_TEAM">Prayer Team</option>
+          <option value="TECHNICAL">Technical</option>
+          <option value="WELFARE">Welfare</option>
+          <option value="PROTOCOL">Protocol</option>
+          <option value="WORKERS_IN_TRAINING">Workers in Training</option>
         </Select>
       </div>
 

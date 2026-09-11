@@ -15,7 +15,10 @@ function toISODate(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
+const SYSTEM_START = { year: 2026, month: 9 };
+
 function getSundaysOfMonth(year: number, month: number): string[] {
+  if (year < SYSTEM_START.year || (year === SYSTEM_START.year && month < SYSTEM_START.month)) return [];
   const sundays: string[] = [];
   const date = new Date(year, month - 1, 1);
   while (date.getMonth() === month - 1) {
@@ -96,8 +99,10 @@ export class AttendanceService {
 
   async getGrid(query: AttendanceQueryDto) {
     const sundays = getSundaysOfMonth(query.year, query.month);
+    const where: any = { status: MemberStatus.ACTIVE };
+    if (query.department) where.department = query.department;
     const members = await this.membersRepo.find({
-      where: { status: MemberStatus.ACTIVE },
+      where,
       order: { lastName: 'ASC', firstName: 'ASC' },
     });
 
@@ -115,6 +120,7 @@ export class AttendanceService {
     const grid = members.map((m) => ({
       id: m.id,
       name: `${m.firstName} ${m.lastName}`,
+      dateJoined: m.dateJoined,
       records: sundays.map((d) => map.get(`${m.id}|${d}`) ?? null),
     }));
 

@@ -14,7 +14,7 @@ import { Member } from '../members/entities/member.entity';
 import { CreateFirstTimerDto } from './dto/create-first-timer.dto';
 import { UpdateFirstTimerDto } from './dto/update-first-timer.dto';
 import { ConvertToMemberDto } from './dto/convert-to-member.dto';
-import { FirstTimerFollowUpStatus, MemberStatus, Gender } from '@church/types';
+import { FirstTimerFollowUpStatus, MemberStatus, Gender, ChurchRole, Department } from '@church/types';
 import { isPgUniqueViolation } from '../common/errors/pg-error';
 
 @Injectable()
@@ -157,8 +157,8 @@ export class FirstTimersService {
         phone: ft.phone,
         gender: ft.gender as unknown as Gender,
         address: ft.address ?? '',
-        churchRole: dto.churchRole ?? 'Member',
-        department: dto.department ?? 'Congregation',
+        churchRole: dto.churchRole ?? ChurchRole.MEMBER,
+        department: dto.department ?? Department.NONE,
         sundaySchoolClass: dto.sundaySchoolClass ?? null,
         status: dto.status ?? MemberStatus.ACTIVE,
         dateJoined: dto.dateJoined ?? new Date().toISOString().slice(0, 10),

@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from '../components/Sidebar';
+import { TopBar } from '../components/TopBar';
 import { useState } from 'react';
 
 export function AppLayout() {
@@ -15,7 +16,8 @@ export function AppLayout() {
           onClick={() => setMobileOpen(false)}
         />
       )}
-      <div className="flex-1 flex flex-col min-w-0 md:ml-[240px]">
+      <div className="flex-1 flex flex-col min-w-0 md:ml-[240px] pt-12">
+        <TopBar />
         {/* Mobile top bar */}
         <div className="md:hidden flex items-center gap-3 p-4 bg-bg-card border-b border-border">
           <button

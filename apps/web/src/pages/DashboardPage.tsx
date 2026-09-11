@@ -5,7 +5,6 @@ import { StatCards } from '../components/dashboard/StatCards';
 import { AttendanceTrendChart } from '../components/dashboard/AttendanceTrendChart';
 import { FollowUpsPanel } from '../components/dashboard/FollowUpsPanel';
 import { BottomActionBar } from '../components/dashboard/BottomActionBar';
-import { TopBar } from '../components/TopBar';
 
 export function DashboardPage() {
   const { user } = useAuth();
@@ -22,17 +21,14 @@ export function DashboardPage() {
   const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
-    <>
-      <TopBar />
-      <div className="pt-12 flex flex-col gap-6">
-        <GreetingBanner firstName={firstName} />
-        <StatCards data={data} />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <AttendanceTrendChart data={data} />
-          <FollowUpsPanel data={data} followUps={followUps.data as any} />
-        </div>
-        <BottomActionBar data={data} todayStr={todayStr} />
+    <div className="flex flex-col gap-6">
+      <GreetingBanner firstName={firstName} />
+      <StatCards data={data} />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <AttendanceTrendChart data={data} />
+        <FollowUpsPanel data={data} followUps={followUps.data as any} />
       </div>
-    </>
+      <BottomActionBar data={data} todayStr={todayStr} />
+    </div>
   );
 }

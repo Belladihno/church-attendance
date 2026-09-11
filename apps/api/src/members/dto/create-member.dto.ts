@@ -5,7 +5,7 @@ import {
   IsOptional,
   MinLength,
 } from 'class-validator';
-import { Gender, MemberStatus } from '@church/types';
+import { Gender, MemberStatus, ChurchRole, Department } from '@church/types';
 
 export class CreateMemberDto {
   @IsString()
@@ -26,11 +26,12 @@ export class CreateMemberDto {
   @IsString()
   address: string;
 
-  @IsString()
-  churchRole: string;
+  @IsEnum(ChurchRole)
+  churchRole: ChurchRole;
 
-  @IsString()
-  department: string;
+  @IsOptional()
+  @IsEnum(Department)
+  department?: Department | null;
 
   @IsOptional()
   @IsString()

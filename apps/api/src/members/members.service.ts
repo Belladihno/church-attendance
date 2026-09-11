@@ -71,8 +71,8 @@ export class MembersService {
       qb.andWhere('member.gender = :gender', { gender: filter.gender });
     }
     if (filter.department) {
-      qb.andWhere('member.department = :department', {
-        department: filter.department,
+      qb.andWhere('member.department ILIKE :department', {
+        department: `%${filter.department}%`,
       });
     }
     if (filter.sundaySchoolClass) {
