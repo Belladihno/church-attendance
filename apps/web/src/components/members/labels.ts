@@ -28,3 +28,9 @@ export const departmentLabel = (v: string | null | undefined) =>
 
 export const churchRoleLabel = (v: string | null | undefined) =>
   CHURCH_ROLE_LABELS[v ?? 'MEMBER'] ?? v ?? 'Member';
+
+export function waLink(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  const intl = digits.startsWith('0') ? `234${digits.slice(1)}` : digits;
+  return `https://wa.me/${intl}`;
+}

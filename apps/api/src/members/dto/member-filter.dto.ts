@@ -1,5 +1,5 @@
-import { IsOptional, IsString, IsEnum, IsInt, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsOptional, IsString, IsEnum, IsInt, IsBoolean, Min } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 import { Gender, MemberStatus, ChurchRole } from '@church/types';
 
 export class MemberFilterDto {
@@ -22,6 +22,11 @@ export class MemberFilterDto {
   @IsOptional()
   @IsEnum(ChurchRole)
   churchRole?: ChurchRole;
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true)
+  isWorker?: boolean;
 
   @IsOptional()
   @IsString()

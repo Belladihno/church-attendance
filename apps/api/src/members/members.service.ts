@@ -71,13 +71,20 @@ export class MembersService {
       qb.andWhere('member.gender = :gender', { gender: filter.gender });
     }
     if (filter.department) {
-      qb.andWhere('member.department ILIKE :department', {
+      // department is a Postgres enum: cast to text before ILIKE,
+      // otherwise PG throws "operator does not exist: <enum> ~~* unknown" (500)
+      qb.andWhere('member.department::text ILIKE :department', {
         department: `%${filter.department}%`,
       });
     }
     if (filter.churchRole) {
       qb.andWhere('member.churchRole = :churchRole', {
         churchRole: filter.churchRole,
+      });
+    }
+    if (filter.isWorker) {
+      qb.andWhere('member.churchRole != :memberRole', {
+        memberRole: ChurchRole.MEMBER,
       });
     }
     if (filter.sundaySchoolClass) {

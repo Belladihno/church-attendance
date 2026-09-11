@@ -1,4 +1,5 @@
 import { apiClient } from './client';
+import type { Member } from './members';
 
 export type FollowUpStatus = 'PENDING' | 'CONTACTED' | 'RESOLVED' | 'CLOSED';
 
@@ -40,15 +41,8 @@ export const createFollowUp = (data: Record<string, unknown>) =>
 export const updateFollowUp = (id: string, data: Record<string, unknown>) =>
   apiClient.patch<FollowUp>(`/follow-ups/${id}`, data).then((r) => r.data);
 
-export type AbsentMember = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  address: string;
-  churchRole: string;
-  department: string | null;
-};
+// detectAbsences returns full active Member entities
+export type AbsentMember = Member;
 
 export const detectFollowUps = (threshold = 2) =>
   apiClient.get<AbsentMember[]>(`/follow-ups/detect?threshold=${threshold}`).then((r) => r.data);
