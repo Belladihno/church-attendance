@@ -8,6 +8,9 @@ import { Toolbar, type FirstTimerFilters } from '../components/first-timers/Tool
 import { FirstTimersTable } from '../components/first-timers/FirstTimersTable';
 import { RecordFirstTimerModal } from '../components/first-timers/RecordFirstTimerModal';
 import { VisitorDrawer } from '../components/first-timers/VisitorDrawer';
+import { MobileSummary } from '../components/first-timers/MobileSummary';
+import { MobileStagePills } from '../components/first-timers/MobileStagePills';
+import { MobileVisitorCards } from '../components/first-timers/MobileVisitorCards';
 
 const PAGE_LIMIT = 10;
 
@@ -112,8 +115,45 @@ export function FirstTimersListPage() {
 
   const monthLabel = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
+  const clearAll = () => { setTab('ALL'); setFilters({ search: '', service: '', gender: '' }); };
+
   return (
     <div className="flex flex-col gap-4">
+      {/* Mobile layout */}
+      <div className="md:hidden flex flex-col gap-3.5">
+        <MobileSummary kpis={kpis} total={all.length} />
+        <MobileStagePills
+          active={tab}
+          counts={counts}
+          onChange={setTab}
+          search={filters.search}
+          onSearch={(v) => setFilters({ ...filters, search: v })}
+        />
+        {convertError && (
+          <div className="bg-absent-bg text-absent text-sm rounded-lg px-4 py-2.5">{convertError}</div>
+        )}
+        {isLoading ? (
+          <div className="text-center p-8 text-text-secondary">Loading visitors...</div>
+        ) : (
+          <MobileVisitorCards
+            visitors={filtered}
+            onOpen={(v) => setDrawerId(v.id)}
+            onConvert={(v) => convertMut.mutate(v)}
+            onClear={clearAll}
+          />
+        )}
+      </div>
+      <button
+        onClick={() => setModalOpen(true)}
+        aria-label="Record visitor"
+        className="md:hidden fixed bottom-20 right-4 z-40 flex items-center gap-2 px-4 py-3 bg-brand-purple text-white rounded-full shadow-modal active:scale-95"
+      >
+        <Plus size={20} />
+        <span className="text-[14px] font-semibold pr-0.5">+ Record visitor</span>
+      </button>
+
+      {/* Desktop layout */}
+      <div className="hidden md:flex flex-col gap-4">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
@@ -178,6 +218,8 @@ export function FirstTimersListPage() {
             onConvert={(v) => convertMut.mutate(v)}
           />
         )}
+      </div>
+
       </div>
 
       <RecordFirstTimerModal open={modalOpen} onClose={() => setModalOpen(false)} />
