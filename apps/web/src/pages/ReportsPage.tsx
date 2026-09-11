@@ -8,6 +8,10 @@ import { TrendChart } from '../components/reports/TrendChart';
 import { ServiceDonut } from '../components/reports/ServiceDonut';
 import { DeptTable } from '../components/reports/DeptTable';
 import { DiagnosticTable } from '../components/reports/DiagnosticTable';
+import { MobileReportHeader } from '../components/reports/MobileReportHeader';
+import { MobileKpiGrid } from '../components/reports/MobileKpiGrid';
+import { MobileDeptList } from '../components/reports/MobileDeptList';
+import { MobileAbsenceCards } from '../components/reports/MobileAbsenceCards';
 import { departmentLabel } from '../components/members/labels';
 
 export function ReportsPage() {
@@ -80,6 +84,27 @@ export function ReportsPage() {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Mobile layout */}
+      <div className="md:hidden flex flex-col gap-3.5 max-w-lg mx-auto w-full">
+        <MobileReportHeader rangeLabel={periodLabel} onExport={onExport} exporting={exporting} />
+        {banner && (
+          <div className="bg-[#EAE7F8] text-brand-purple text-sm rounded-lg px-4 py-2.5">{banner}</div>
+        )}
+        {isLoading || !data ? (
+          <div className="text-center p-8 text-text-secondary">Loading analytics...</div>
+        ) : (
+          <>
+            <MobileKpiGrid data={data} />
+            <TrendChart series={data.series} />
+            <ServiceDonut mainAvg={data.breakdown.mainAvg} schoolAvg={data.breakdown.schoolAvg} />
+            <MobileDeptList departments={data.departments} />
+            <MobileAbsenceCards flagged={data.flagged} />
+          </>
+        )}
+      </div>
+
+      {/* Desktop layout */}
+      <div className="hidden md:flex flex-col gap-4">
       <ReportHeader periodLabel={periodLabel} onExport={onExport} exporting={exporting} />
 
       {banner && (
@@ -99,6 +124,7 @@ export function ReportsPage() {
           <DiagnosticTable flagged={data.flagged} onAssignBatch={onAssignBatch} assigning={assigning} />
         </>
       )}
+      </div>
     </div>
   );
 }
