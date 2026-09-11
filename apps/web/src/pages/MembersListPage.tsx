@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueries } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { Download, Plus } from 'lucide-react';
 import { getMembers, getMember, getMemberStats } from '../api/members';
 import { MetricRibbon } from '../components/members/MetricRibbon';
@@ -10,10 +11,11 @@ import { AddMemberModal } from '../components/members/AddMemberModal';
 const PAGE_LIMIT = 10;
 
 export function MembersListPage() {
+  const [searchParams] = useSearchParams();
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState<MemberFilters>({
     search: '',
-    department: '',
+    department: searchParams.get('department') || '',
     churchRole: '',
     status: '',
     gender: '',

@@ -16,6 +16,7 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { FollowUpsModule } from './follow-ups/follow-ups.module';
 import { FirstTimersModule } from './first-timers/first-timers.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ReportsModule } from './reports/reports.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -52,6 +53,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     FollowUpsModule,
     FirstTimersModule,
     DashboardModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [
