@@ -37,6 +37,15 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Fail fast with a clear message if any Neon secret is missing/misnamed
+      - name: Check Neon secrets
+        run: |
+          missing=0
+          for v in DB_HOST DB_PORT DB_USER DB_PASSWORD DB_NAME; do
+            if [ -z "${!v}" ]; then echo "::error::Missing or empty secret NEON_$v"; missing=1; fi
+          done
+          exit $missing
+
       # @church/types resolves to packages/types/dist — build it first on fresh clones
       - name: Build workspace types
         run: pnpm --filter @church/types build
