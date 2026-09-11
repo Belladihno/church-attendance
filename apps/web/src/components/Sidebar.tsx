@@ -17,7 +17,7 @@ export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose:
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-30 w-[240px] bg-bg-sidebar text-text-inverse flex flex-col
+      className={`fixed inset-y-0 left-0 z-50 w-[240px] bg-bg-sidebar text-text-inverse flex flex-col
       transform transition-transform md:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
     >
       <div className="p-6 border-b border-white/10">

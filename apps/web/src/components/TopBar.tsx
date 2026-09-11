@@ -42,7 +42,7 @@ export function TopBar() {
   const overdue = (overview?.followUpRequired.twoWeeks ?? 0) + (overview?.followUpRequired.threeOrMore ?? 0);
 
   return (
-    <header className="fixed top-0 left-0 md:left-[240px] right-0 h-12 bg-bg-card/95 backdrop-blur-md shadow-[0_1px_8px_rgba(15,10,46,0.04)] z-20 px-4 md:px-8 flex items-center justify-between">
+    <header className="fixed top-0 left-0 md:left-[240px] right-0 h-12 bg-bg-card/95 backdrop-blur-md shadow-[0_1px_8px_rgba(15,10,46,0.04)] z-20 px-4 md:px-8 hidden md:flex items-center justify-between">
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2 text-xs text-text-secondary">
           <Link to="/" className="hover:text-text-primary">Grace Chapel</Link>

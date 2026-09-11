@@ -20,8 +20,8 @@ export function AttendanceTrendChart({ data }: { data: DashboardOverview }) {
         <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-[#B4ADFF]" /><span className="text-xs text-text-secondary">Sunday School</span></div>
       </div>
 
-      <div className="relative w-full overflow-hidden pt-4">
-        <svg className="w-full h-auto overflow-visible select-none" viewBox="0 0 540 210" xmlns="http://www.w3.org/2000/svg">
+      <div className="relative w-full overflow-x-auto pt-4">
+        <svg className="h-auto overflow-visible select-none min-w-[520px] w-full" viewBox="0 0 540 210" xmlns="http://www.w3.org/2000/svg">
           <line stroke="#DDE1F0" strokeDasharray="3 3" strokeWidth="1" x1="40" x2="520" y1="30" y2="30" /><text fill="#9E99C0" fontFamily="DM Sans" fontSize="10" textAnchor="end" x="32" y="34">320</text>
           <line stroke="#DDE1F0" strokeDasharray="3 3" strokeWidth="1" x1="40" x2="520" y1="80" y2="80" /><text fill="#9E99C0" fontSize="10" textAnchor="end" x="32" y="84">300</text>
           <line stroke="#DDE1F0" strokeDasharray="3 3" strokeWidth="1" x1="40" x2="520" y1="130" y2="130" /><text fill="#9E99C0" fontSize="10" textAnchor="end" x="32" y="134">280</text>
