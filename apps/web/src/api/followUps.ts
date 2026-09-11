@@ -1,13 +1,54 @@
 import { apiClient } from './client';
 
+export type FollowUpStatus = 'PENDING' | 'CONTACTED' | 'RESOLVED' | 'CLOSED';
+
+export type FollowUpSubject = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  address?: string | null;
+  churchRole?: string;
+  department?: string | null;
+  dateAttended?: string;
+};
+
+export type FollowUp = {
+  id: string;
+  memberId: string | null;
+  firstTimerId: string | null;
+  member: FollowUpSubject | null;
+  firstTimer: FollowUpSubject | null;
+  reason: string;
+  assignedTo: string | null;
+  status: FollowUpStatus;
+  contactDate: string | null;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export const getFollowUps = (params?: Record<string, string | undefined>) =>
-  apiClient.get('/follow-ups', { params }).then((r) => r.data);
+  apiClient.get<FollowUp[]>('/follow-ups', { params }).then((r) => r.data);
+
+export const getFollowUp = (id: string) =>
+  apiClient.get<FollowUp>(`/follow-ups/${id}`).then((r) => r.data);
 
 export const createFollowUp = (data: Record<string, unknown>) =>
-  apiClient.post('/follow-ups', data).then((r) => r.data);
+  apiClient.post<FollowUp>('/follow-ups', data).then((r) => r.data);
 
 export const updateFollowUp = (id: string, data: Record<string, unknown>) =>
-  apiClient.patch(`/follow-ups/${id}`, data).then((r) => r.data);
+  apiClient.patch<FollowUp>(`/follow-ups/${id}`, data).then((r) => r.data);
+
+export type AbsentMember = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  address: string;
+  churchRole: string;
+  department: string | null;
+};
 
 export const detectFollowUps = (threshold = 2) =>
-  apiClient.get(`/follow-ups/detect?threshold=${threshold}`).then((r) => r.data);
+  apiClient.get<AbsentMember[]>(`/follow-ups/detect?threshold=${threshold}`).then((r) => r.data);

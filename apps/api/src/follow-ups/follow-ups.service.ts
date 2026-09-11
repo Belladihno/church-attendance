@@ -70,11 +70,18 @@ export class FollowUpsService {
     const where: any = {};
     if (filter.status) where.status = filter.status;
     if (filter.assignedTo) where.assignedTo = filter.assignedTo;
-    return this.followUpsRepo.find({ where, order: { createdAt: 'DESC' } });
+    return this.followUpsRepo.find({
+      where,
+      relations: { member: true, firstTimer: true },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async findOne(id: string): Promise<FollowUp> {
-    const fu = await this.followUpsRepo.findOne({ where: { id } });
+    const fu = await this.followUpsRepo.findOne({
+      where: { id },
+      relations: { member: true, firstTimer: true },
+    });
     if (!fu) {
       throw new NotFoundException(
         { message: 'Follow-up not found', errorCode: 'FOLLOWUPS-002' },
