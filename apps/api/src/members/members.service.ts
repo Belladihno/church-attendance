@@ -10,7 +10,7 @@ import { isPgUniqueViolation } from '../common/errors/pg-error';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { MemberFilterDto } from './dto/member-filter.dto';
-import { MemberStatus } from '@church/types';
+import { MemberStatus, ChurchRole } from '@church/types';
 
 @Injectable()
 export class MembersService {
@@ -75,6 +75,11 @@ export class MembersService {
         department: `%${filter.department}%`,
       });
     }
+    if (filter.churchRole) {
+      qb.andWhere('member.churchRole = :churchRole', {
+        churchRole: filter.churchRole,
+      });
+    }
     if (filter.sundaySchoolClass) {
       qb.andWhere('member.sundaySchoolClass = :scc', {
         scc: filter.sundaySchoolClass,
@@ -86,6 +91,44 @@ export class MembersService {
 
     const [data, total] = await qb.getManyAndCount();
     return { data, total, page, limit };
+  }
+
+  async getStats(): Promise<{
+    total: number;
+    active: number;
+    workers: number;
+    newThisMonth: number;
+    departments: number;
+  }> {
+    const total = await this.membersRepo.count();
+    const active = await this.membersRepo.count({
+      where: { status: MemberStatus.ACTIVE },
+    });
+    const workers = await this.membersRepo
+      .createQueryBuilder('member')
+      .where('member."church_role" != :role', { role: ChurchRole.MEMBER })
+      .andWhere('member.status = :status', { status: MemberStatus.ACTIVE })
+      .getCount();
+    const firstOfMonth = new Date();
+    firstOfMonth.setDate(1);
+    const y = firstOfMonth.getFullYear();
+    const m = String(firstOfMonth.getMonth() + 1).padStart(2, '0');
+    const start = `${y}-${m}-01`;
+    const newThisMonth = await this.membersRepo
+      .createQueryBuilder('member')
+      .where('member."date_joined" >= :start', { start })
+      .getCount();
+    const departments = await this.membersRepo
+      .createQueryBuilder('member')
+      .select('COUNT(DISTINCT member.department)', 'count')
+      .getRawOne<{ count: string }>();
+    return {
+      total,
+      active,
+      workers,
+      newThisMonth,
+      departments: parseInt(departments?.count ?? '0', 10),
+    };
   }
 
   async findOne(id: string): Promise<Member> {

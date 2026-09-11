@@ -35,6 +35,11 @@ export class MembersController {
     return this.membersService.findAll(filter);
   }
 
+  @Get('stats/overview')
+  getStats() {
+    return this.membersService.getStats();
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     const member = await this.membersService.findOne(id);
