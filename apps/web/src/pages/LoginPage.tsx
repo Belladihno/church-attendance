@@ -27,7 +27,13 @@ export function LoginPage() {
       await login(values.email, values.password);
       navigate('/');
     } catch (e: any) {
-      setError(e.response?.data?.message || 'Invalid credentials');
+      if (!e.response) {
+        setError('Cannot reach the server. Please check your connection and try again.');
+      } else if (e.response.status >= 500) {
+        setError('Something went wrong on our end. Please try again later.');
+      } else {
+        setError(e.response.data?.message || 'Invalid email or password');
+      }
     }
   };
 

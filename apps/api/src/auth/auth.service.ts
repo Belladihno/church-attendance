@@ -11,13 +11,24 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string) {
+    // Same response for unknown email and wrong password (no user enumeration)
+    const invalid = () =>
+      new UnauthorizedException(
+        {
+          message: 'Invalid email or password',
+          error: 'Unauthorized',
+          statusCode: 401,
+          errorCode: 'AUTH-001',
+        },
+        { errorCode: 'AUTH-001' },
+      );
     const user = await this.usersService.findByEmail(email);
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials', { description: 'Invalid credentials' });
+      throw invalid();
     }
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) {
-      throw new UnauthorizedException('Invalid credentials', { description: 'Invalid credentials' });
+      throw invalid();
     }
     return user;
   }
