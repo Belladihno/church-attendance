@@ -1,0 +1,42 @@
+name: Run DB migrations (Neon)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/migrate.yml'
+  workflow_dispatch:
+
+# Never run two migrations concurrently against the same database
+concurrency:
+  group: neon-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DB_HOST: ${{ secrets.NEON_DB_HOST }}
+      DB_PORT: ${{ secrets.NEON_DB_PORT }}
+      DB_USER: ${{ secrets.NEON_DB_USER }}
+      DB_PASSWORD: ${{ secrets.NEON_DB_PASSWORD }}
+      DB_NAME: ${{ secrets.NEON_DB_NAME }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run pending migrations
+        working-directory: apps/api
+        run: pnpm migration:run
