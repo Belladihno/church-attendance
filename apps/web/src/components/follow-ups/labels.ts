@@ -54,3 +54,16 @@ export function subjectInitials(name: string): string {
   const parts = name.split(' ').filter(Boolean);
   return `${(parts[0]?.[0] || '').toUpperCase()}${(parts[1]?.[0] || '').toUpperCase()}`;
 }
+
+export function waLink(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  const intl = digits.startsWith('0') ? `234${digits.slice(1)}` : digits;
+  return `https://wa.me/${intl}`;
+}
+
+export type CareUnit = string; // 'all' | 'FIRST_TIMERS' | Department value
+
+export function unitOf(f: FollowUp): string {
+  if (f.member) return f.member.department ?? 'NONE';
+  return 'FIRST_TIMERS';
+}
