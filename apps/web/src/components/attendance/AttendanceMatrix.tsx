@@ -15,6 +15,8 @@ type Props = {
   members: MemberRow[];
   edits: Record<string, string>;
   onToggle: (memberId: string, sunday: string, current: string | null) => void;
+  selectedSunday?: string | null;
+  onSelectSunday?: (date: string) => void;
 };
 
 function StatusBadge({ status, isEdited, isFuture }: { status: string | null; isEdited: boolean; isFuture?: boolean }) {
@@ -26,7 +28,7 @@ function StatusBadge({ status, isEdited, isFuture }: { status: string | null; is
   return <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-md bg-absent-bg text-absent text-xs font-medium ${isEdited ? 'ring-2 ring-brand-purple' : ''}`}>✕ Absent</span>;
 }
 
-export function AttendanceMatrix({ sundays, members, edits, onToggle }: Props) {
+export function AttendanceMatrix({ sundays, members, edits, onToggle, selectedSunday, onSelectSunday }: Props) {
   const d = new Date();
   const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   if (members.length === 0) {
@@ -43,9 +45,14 @@ export function AttendanceMatrix({ sundays, members, edits, onToggle }: Props) {
               {sundays.map((d) => {
                 const isToday = d === todayStr;
                 const isFuture = d > todayStr;
+                const isSelected = d === selectedSunday;
                 const label = isToday ? 'Today' : isFuture ? 'Future' : 'Past';
                 return (
-                  <th key={d} className={`py-3 px-3 text-center min-w-[110px] ${isToday ? 'bg-[#EAE7F8]/60 text-brand-purple' : isFuture ? 'opacity-60' : ''}`}>
+                  <th
+                    key={d}
+                    onClick={() => !isFuture && onSelectSunday?.(d)}
+                    className={`py-3 px-3 text-center min-w-[110px] cursor-pointer ${isToday ? 'bg-[#EAE7F8]/60 text-brand-purple' : isFuture ? 'opacity-60' : ''} ${isSelected ? 'ring-2 ring-brand-purple' : ''}`}
+                  >
                     <div className="flex flex-col items-center">
                       <span className="text-[11px] uppercase tracking-wider">{label}</span>
                       <span className="text-sm font-semibold">{new Date(d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>

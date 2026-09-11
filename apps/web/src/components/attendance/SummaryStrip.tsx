@@ -5,6 +5,7 @@ type Props = {
   absent: number;
   excused: number;
   absentDelta?: number | null;
+  label?: string;
 };
 
 export function SummaryStrip({
@@ -14,6 +15,7 @@ export function SummaryStrip({
   absent,
   excused,
   absentDelta,
+  label,
 }: Props) {
   const coverage = total ? Math.round((recorded / total) * 100 * 10) / 10 : 0;
   const presentPct = recorded
@@ -32,7 +34,7 @@ export function SummaryStrip({
         </div>
       </div>
       <div className='bg-bg-card rounded-xl p-4 shadow-card flex flex-col justify-between'>
-        <span className='text-xs text-text-secondary'>Recorded Today</span>
+        <span className='text-xs text-text-secondary'>{label ? `Recorded • ${label}` : 'Recorded Today'}</span>
         <div className='flex items-baseline justify-between mt-2'>
           <span className='text-2xl font-bold text-brand-purple'>
             {recorded}
@@ -43,7 +45,7 @@ export function SummaryStrip({
         </div>
       </div>
       <div className='bg-bg-card rounded-xl p-4 shadow-card flex flex-col justify-between bg-present-bg/25'>
-        <span className='text-xs text-present'>Present Today</span>
+        <span className='text-xs text-present'>{label ? `Present • ${label}` : 'Present Today'}</span>
         <div className='flex items-baseline justify-between mt-2'>
           <span className='text-2xl font-bold text-present'>{present}</span>
           <span className='text-xs px-2 py-0.5 rounded bg-present-bg text-present font-semibold'>
@@ -52,7 +54,7 @@ export function SummaryStrip({
         </div>
       </div>
       <div className='bg-bg-card rounded-xl p-4 shadow-card flex flex-col justify-between bg-absent-bg/25'>
-        <span className='text-xs text-absent'>Absent Today</span>
+        <span className='text-xs text-absent'>{label ? `Absent • ${label}` : 'Absent Today'}</span>
         <div className='flex items-baseline justify-between mt-2'>
           <span className='text-2xl font-bold text-absent'>{absent}</span>
           <span className='text-xs text-absent'>
