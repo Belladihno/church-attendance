@@ -3,6 +3,7 @@ import { KpiCards } from './KpiCards';
 import { PipelineTabs } from './PipelineTabs';
 import { Toolbar } from './Toolbar';
 import { FirstTimersTable } from './FirstTimersTable';
+import { FirstTimersSkeleton } from '../ui/skeletons/FirstTimersSkeleton';
 import type { FirstTimersState } from '../../hooks/useFirstTimers';
 
 export function DesktopFirstTimersView({ a }: { a: FirstTimersState }) {
@@ -48,7 +49,7 @@ export function DesktopFirstTimersView({ a }: { a: FirstTimersState }) {
         <PipelineTabs active={a.tab} counts={a.counts} onChange={a.setTab} />
         <Toolbar filters={a.filters} onChange={a.setFilters} monthLabel={a.monthLabel} />
         {a.isLoading ? (
-          <div className="text-center p-8 text-text-secondary">Loading visitors...</div>
+          <FirstTimersSkeleton />
         ) : a.filtered.length === 0 ? (
           <div className="p-12 text-center">
             <p className="text-sm text-text-secondary">No visitors match this view.</p>

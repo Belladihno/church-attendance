@@ -2,6 +2,7 @@ import { RefreshCw, Plus } from 'lucide-react';
 import { StatCards } from './StatCards';
 import { FilterBar } from './FilterBar';
 import { CareCard } from './CareCard';
+import { FollowUpsSkeleton } from '../ui/skeletons/FollowUpsSkeleton';
 import type { FollowUpsState } from '../../hooks/useFollowUps';
 
 export function DesktopFollowUpsView({ a }: { a: FollowUpsState }) {
@@ -65,7 +66,7 @@ export function DesktopFollowUpsView({ a }: { a: FollowUpsState }) {
       />
 
       {a.isLoading ? (
-        <div className="text-center p-8 text-text-secondary">Loading follow-ups...</div>
+        <FollowUpsSkeleton />
       ) : a.filtered.length === 0 ? (
         <div className="bg-bg-card rounded-xl p-12 text-center shadow-card">
           <p className="text-sm text-text-secondary">No care records in this view.</p>

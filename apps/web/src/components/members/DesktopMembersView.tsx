@@ -2,6 +2,7 @@ import { Download, Plus } from 'lucide-react';
 import { MetricRibbon } from './MetricRibbon';
 import { FilterToolbar } from './FilterToolbar';
 import { MembersTable } from './MembersTable';
+import { MembersListSkeleton } from '../ui/skeletons/MembersListSkeleton';
 import type { MembersState } from '../../hooks/useMembers';
 
 export function DesktopMembersView({ a }: { a: MembersState }) {
@@ -50,7 +51,7 @@ export function DesktopMembersView({ a }: { a: MembersState }) {
       />
 
       {a.isLoading ? (
-        <div className="text-center p-8 text-text-secondary">Loading members...</div>
+        <MembersListSkeleton />
       ) : a.members.length === 0 ? (
         <div className="bg-bg-card rounded-xl p-12 text-center shadow-card">
           <p className="text-sm text-text-secondary">No members match these filters.</p>

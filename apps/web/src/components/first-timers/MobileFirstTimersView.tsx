@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react';
 import { MobileSummary } from './MobileSummary';
 import { MobileStagePills } from './MobileStagePills';
 import { MobileVisitorCards } from './MobileVisitorCards';
+import { RosterSkeleton } from '../ui/skeletons/RosterSkeleton';
 import type { FirstTimersState } from '../../hooks/useFirstTimers';
 
 export function MobileFirstTimersView({ a }: { a: FirstTimersState }) {
@@ -20,7 +21,7 @@ export function MobileFirstTimersView({ a }: { a: FirstTimersState }) {
           <div className="bg-absent-bg text-absent text-sm rounded-lg px-4 py-2.5">{a.convertError}</div>
         )}
         {a.isLoading ? (
-          <div className="text-center p-8 text-text-secondary">Loading visitors...</div>
+          <RosterSkeleton />
         ) : (
           <MobileVisitorCards
             visitors={a.filtered}

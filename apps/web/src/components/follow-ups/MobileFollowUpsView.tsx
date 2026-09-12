@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react';
 import { MobileSummary } from './MobileSummary';
 import { MobileTabs } from './MobileTabs';
 import { MobileCareCards } from './MobileCareCards';
+import { FollowUpsSkeleton } from '../ui/skeletons/FollowUpsSkeleton';
 import type { FollowUpsState } from '../../hooks/useFollowUps';
 
 export function MobileFollowUpsView({ a }: { a: FollowUpsState }) {
@@ -29,7 +30,7 @@ export function MobileFollowUpsView({ a }: { a: FollowUpsState }) {
           <div className="bg-[#EAE7F8] text-brand-purple text-sm rounded-lg px-4 py-2.5">{a.banner}</div>
         )}
         {a.isLoading ? (
-          <div className="text-center p-8 text-text-secondary">Loading follow-ups...</div>
+          <FollowUpsSkeleton />
         ) : (
           <MobileCareCards
             tickets={a.filtered}

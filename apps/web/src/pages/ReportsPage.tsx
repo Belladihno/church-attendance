@@ -12,6 +12,7 @@ import { MobileReportHeader } from '../components/reports/MobileReportHeader';
 import { MobileKpiGrid } from '../components/reports/MobileKpiGrid';
 import { MobileDeptList } from '../components/reports/MobileDeptList';
 import { MobileAbsenceCards } from '../components/reports/MobileAbsenceCards';
+import { ReportsSkeleton } from '../components/ui/skeletons/ReportsSkeleton';
 import { departmentLabel } from '../components/members/labels';
 
 export function ReportsPage() {
@@ -91,7 +92,7 @@ export function ReportsPage() {
           <div className="bg-[#EAE7F8] text-brand-purple text-sm rounded-lg px-4 py-2.5">{banner}</div>
         )}
         {isLoading || !data ? (
-          <div className="text-center p-8 text-text-secondary">Loading analytics...</div>
+          <ReportsSkeleton />
         ) : (
           <>
             <MobileKpiGrid data={data} />
@@ -112,7 +113,7 @@ export function ReportsPage() {
       )}
 
       {isLoading || !data ? (
-        <div className="text-center p-8 text-text-secondary">Loading analytics...</div>
+        <ReportsSkeleton />
       ) : (
         <>
           <KpiCards data={data} />

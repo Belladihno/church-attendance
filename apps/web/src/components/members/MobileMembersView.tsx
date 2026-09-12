@@ -3,6 +3,7 @@ import { MobileStatusBar } from './MobileStatusBar';
 import { MobileMemberChips } from './MobileMemberChips';
 import { MobileMemberCards } from './MobileMemberCards';
 import { MobileMemberSheet } from './MobileMemberSheet';
+import { RosterSkeleton } from '../ui/skeletons/RosterSkeleton';
 import type { MembersState } from '../../hooks/useMembers';
 
 export function MobileMembersView({ a }: { a: MembersState }) {
@@ -28,7 +29,7 @@ export function MobileMembersView({ a }: { a: MembersState }) {
           }}
         />
         {a.isLoading && !a.careOnly ? (
-          <div className="text-center p-8 text-text-secondary">Loading members...</div>
+          <RosterSkeleton rows={8} />
         ) : (
           <MobileMemberCards
             members={a.cardMembers}

@@ -4,6 +4,7 @@ import { MobileSearchChips } from './MobileSearchChips';
 import { MobileRoster } from './MobileRoster';
 import { MobileSyncBar } from './MobileSyncBar';
 import { MobileNoteSheet } from './MobileNoteSheet';
+import { RosterSkeleton } from '../ui/skeletons/RosterSkeleton';
 import type { AttendanceState } from '../../hooks/useAttendance';
 
 export function MobileAttendanceView({ a }: { a: AttendanceState }) {
@@ -70,7 +71,7 @@ export function MobileAttendanceView({ a }: { a: AttendanceState }) {
             )}
           </>
         ) : (
-          <div className="text-center p-8 text-text-secondary">Loading roster...</div>
+          <RosterSkeleton />
         )}
       </div>
       {a.grid && a.selectedSunday && !a.isBeforeStart && (

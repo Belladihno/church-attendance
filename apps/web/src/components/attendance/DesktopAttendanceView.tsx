@@ -2,6 +2,7 @@ import { SubHeader } from './SubHeader';
 import { SummaryStrip } from './SummaryStrip';
 import { GridControls } from './GridControls';
 import { AttendanceMatrix } from './AttendanceMatrix';
+import { AttendanceGridSkeleton } from '../ui/skeletons/AttendanceGridSkeleton';
 import type { AttendanceState } from '../../hooks/useAttendance';
 
 export function DesktopAttendanceView({ a }: { a: AttendanceState }) {
@@ -60,7 +61,7 @@ export function DesktopAttendanceView({ a }: { a: AttendanceState }) {
           onSelectSunday={a.setSelectedSunday}
         />
       ) : (
-        <div className="text-center p-8 text-text-secondary">Loading grid...</div>
+          <AttendanceGridSkeleton />
       )}
     </div>
   );

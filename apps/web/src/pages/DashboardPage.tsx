@@ -6,13 +6,14 @@ import { AttendanceTrendChart } from '../components/dashboard/AttendanceTrendCha
 import { FollowUpsPanel } from '../components/dashboard/FollowUpsPanel';
 import { BottomActionBar } from '../components/dashboard/BottomActionBar';
 import { QuickActions } from '../components/dashboard/QuickActions';
+import { DashboardSkeleton } from '../components/ui/skeletons/DashboardSkeleton';
 
 export function DashboardPage() {
   const { user } = useAuth();
   const { overview, followUps, memberStats } = useDashboard();
   const { data, isLoading, error } = overview;
 
-  if (isLoading) return <div className="p-8 text-center text-text-secondary">Loading dashboard...</div>;
+  if (isLoading) return <DashboardSkeleton />;
   if (error) return <div className="p-8 text-center text-brand-red">Failed to load dashboard</div>;
   if (!data) return null;
 
