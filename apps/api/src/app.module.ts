@@ -19,6 +19,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ReportsModule } from './reports/reports.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -54,10 +55,18 @@ import { RolesGuard } from './common/guards/roles.guard';
     FirstTimersModule,
     DashboardModule,
     ReportsModule,
+    ThrottlerModule.forRoot({
+      // Generous global ceiling; sensitive routes override with @Throttle.
+      // NOTE: in-memory storage — correct for a single instance. If the API
+      // ever scales horizontally, switch storage to Redis.
+      throttlers: [{ name: 'default', limit: 120, ttl: 60000 }],
+      errorMessage: 'Too many requests. Please wait a moment and try again.',
+    }),
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
   ],

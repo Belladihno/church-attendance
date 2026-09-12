@@ -29,6 +29,8 @@ export function LoginPage() {
     } catch (e: any) {
       if (!e.response) {
         setError('Cannot reach the server. Please check your connection and try again.');
+      } else if (e.response.status === 429) {
+        setError(e.response.data?.message || 'Too many attempts. Please wait a minute and try again.');
       } else if (e.response.status >= 500) {
         setError('Something went wrong on our end. Please try again later.');
       } else {
